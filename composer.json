@@ -1,0 +1,15 @@
+{
+    "name": "spiny/time-to-tweet",
+    "description": "twitter bot",
+    "require-dev": {
+        "abraham/twitteroauth": "^0.6.4"
+    },
+    "authors": [
+        {
+            "name": "spiny",
+            "email": "spiny_beast@mail.ru"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
