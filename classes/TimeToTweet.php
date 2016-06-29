@@ -59,17 +59,16 @@ class TimeToTweet
 
         $images = [];
         foreach ($allImages as $image) {
-            //выбираем только изображения с расширением .png, .jpg и .gif
-            if (!strstr($image, '.png') and !strstr($image, '.jpg') and
-                !strstr($image, '.gif')
-            ) continue;
+            if (!strpos($image, '.png') and !strpos($image, '.jpg') and !strpos($image, '.gif')){
+                continue;
+            }
             $images[] = $image;
         }
 
         return $imgPath . $images[mt_rand(0, count($images) - 1)];
     }
 
-    public function checkNotFollowBack()
+    public function removeNotFollowers()
     {
         $friends = self::getFriends();
         $followers = self::getFollowers();
@@ -88,7 +87,7 @@ class TimeToTweet
         $friends = self::$connection->get('users/lookup', ['screen_name' => 'jorastrah']);
         $message = file_get_contents(__DIR__ . '/../data/messages/text.txt');
         foreach ($friends as $friend) {
-            self::$connection->post('direct_messages/new', ['user_id' => $friend->id, 'text' => $message]);
+            self::sendMessage($friend, $message);
         }
     }
 
@@ -101,6 +100,11 @@ class TimeToTweet
     private static function getFriends()
     {
         return self::$connection->get('friends/ids', []);
+    }
+
+    private static function sendMessage($friend, $message)
+    {
+        self::$connection->post('direct_messages/new', ['user_id' => $friend->id, 'text' => $message]);
     }
 
     public function done()
